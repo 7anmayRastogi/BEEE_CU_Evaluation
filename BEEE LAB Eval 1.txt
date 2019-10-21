@@ -1,0 +1,56 @@
+int Buzzpin=12;
+const int pingPin = 9;
+const int echoPin =8; 
+int rled= 5;
+int gled= 2;
+long duration,cm;
+
+void setup() 
+{
+   pinMode(rled,OUTPUT);
+  pinMode(gled,OUTPUT);
+  pinMode(pingPin, OUTPUT);
+}
+long ping()
+{
+  digitalWrite(pingPin, LOW);
+   delayMicroseconds(20);
+   digitalWrite(pingPin, HIGH);
+   delayMicroseconds(20);
+   digitalWrite(pingPin, LOW);
+   pinMode(echoPin, INPUT);
+   duration = pulseIn(echoPin, HIGH);
+  
+   return duration;
+}
+
+void loop()
+{
+  long dur=ping();
+    cm = microsecondsToCentimeters(dur);
+    
+  if (cm >10)
+  {
+  tone(Buzzpin,300);
+  delay(1000);
+  noTone(Buzzpin);
+    
+    do
+    {
+  digitalWrite(rled,HIGH);
+  delay(100);
+  digitalWrite(rled,LOW);
+  digitalWrite(gled,HIGH);
+  delay(100);
+  digitalWrite(gled,LOW);
+    delay(100);
+   long dur=ping();
+    cm = microsecondsToCentimeters(dur);
+    }while (cm>10);
+    }
+     
+}
+
+long microsecondsToCentimeters(long microseconds) {
+   return microseconds / 29 / 2;
+}
